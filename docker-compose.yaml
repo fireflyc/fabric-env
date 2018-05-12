@@ -37,6 +37,7 @@ services:
     command: /bin/bash
     volumes:
       - ./chaincode/demo1:/opt/gopath/src/github.com/demo1
+      - ./chaincode/auction:/opt/gopath/src/github.com/auction
       - ./crypto-config:/opt/crypto-config
       - ./configtx:/opt/configtx
     networks:
