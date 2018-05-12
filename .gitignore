@@ -2,3 +2,4 @@
 ./var
 ./crypto-config
 ./configtx
+.DS_Store
