@@ -1,0 +1,151 @@
+version: '3'
+
+networks:
+  byfn:
+
+services:
+  orderer.fireflyc.im:
+    container_name: orderer.fireflyc.im
+    image: hyperledger/fabric-orderer:x86_64-1.1.0
+    restart: always
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp
+    volumes:
+      - ./configtx/genesis.block:/etc/hyperledger/configtx/genesis.block
+      - ./crypto-config/ordererOrganizations/fireflyc.im/orderers/orderer.fireflyc.im/msp:/etc/hyperledger/msp/orderer/msp
+      - ./var/orderer.fireflyc.im:/var/hyperledger/production/orderer
+    ports:
+        - 7050:7050
+    command: orderer start
+    networks:
+        - byfn
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:x86_64-1.1.0
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_LOGGING_LEVEL=DEBUG
+      - CORE_PEER_ID=cli
+      - CORE_CHAINCODE_KEEPALIVE=10
+    command: /bin/bash
+    volumes:
+      - ./chaincode/demo1:/opt/gopath/src/github.com/demo1
+      - ./crypto-config:/opt/crypto-config
+      - ./configtx:/opt/configtx
+    networks:
+      - byfn
+
+  peer0.org1.fireflyc.im:
+    container_name: peer0.org1.fireflyc.im
+    image: hyperledger/fabric-peer:x86_64-1.1.0
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${PROJECT_NAME}_byfn
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/msp
+
+      - CORE_PEER_ID=peer0.org1.fireflyc.im
+      - CORE_PEER_ADDRESS=peer0.org1.fireflyc.im:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.fireflyc.im:7051
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+    command: peer node start
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ./crypto-config/peerOrganizations/org1.fireflyc.im/peers/peer0.org1.fireflyc.im/msp:/etc/hyperledger/peer/msp
+      - ./var/peer0.org1.fireflyc.im:/var/hyperledger/production
+    ports:
+      - 7051:7051
+      - 7053:7053
+    networks:
+      - byfn
+
+  peer1.org1.fireflyc.im:
+    container_name: peer1.org1.fireflyc.im
+    image: hyperledger/fabric-peer:x86_64-1.1.0
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${PROJECT_NAME}_byfn
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/msp
+
+      - CORE_PEER_ID=peer1.org1.fireflyc.im
+      - CORE_PEER_ADDRESS=peer1.org1.fireflyc.im:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.fireflyc.im:7051
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+    command: peer node start
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ./crypto-config/peerOrganizations/org1.fireflyc.im/peers/peer1.org1.fireflyc.im/msp:/etc/hyperledger/peer/msp
+      - ./var/peer1.org1.fireflyc.im:/var/hyperledger/production
+    ports:
+      - 8051:7051
+      - 8053:7053
+    networks:
+      - byfn
+
+  peer0.org2.fireflyc.im:
+    container_name: peer0.org2.fireflyc.im
+    image: hyperledger/fabric-peer:x86_64-1.1.0
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${PROJECT_NAME}_byfn
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/msp
+
+      - CORE_PEER_ID=peer0.org2.fireflyc.im
+      - CORE_PEER_ADDRESS=peer0.org2.fireflyc.im:7051
+      - CORE_PEER_LOCALMSPID=Org2MSP
+
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.fireflyc.im:7051
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+    command: peer node start
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ./crypto-config/peerOrganizations/org2.fireflyc.im/peers/peer0.org2.fireflyc.im/msp:/etc/hyperledger/peer/msp
+      - ./var/peer0.org2.fireflyc.im:/var/hyperledger/production
+    ports:
+      - 9051:7051
+      - 9053:7053
+    networks:
+      - byfn
+
+  peer1.org2.fireflyc.im:
+    container_name: peer1.org2.fireflyc.im
+    image: hyperledger/fabric-peer:x86_64-1.1.0
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${PROJECT_NAME}_byfn
+      - CORE_LOGGING_LEVEL=INFO
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/msp
+
+      - CORE_PEER_ID=peer1.org2.fireflyc.im
+      - CORE_PEER_ADDRESS=peer1.org2.fireflyc.im:7051
+      - CORE_PEER_LOCALMSPID=Org2MSP
+
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.fireflyc.im:7051
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+    command: peer node start
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ./crypto-config/peerOrganizations/org2.fireflyc.im/peers/peer1.org2.fireflyc.im/msp:/etc/hyperledger/peer/msp
+      - ./var/peer1.org2.fireflyc.im:/var/hyperledger/production
+    ports:
+      - 10051:7051
+      - 10053:7053
+    networks:
+      - byfn
