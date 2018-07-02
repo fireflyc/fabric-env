@@ -1,0 +1,23 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <form th:action="@{/book/give_back}" method="post">
+        <div class="form-group">
+            <label for="isbn">ISBN</label>
+            <input type="text" class="form-control" id="isbn" name="isbn"/>
+            <button type="button" class="btn btn-primary btn-sm">查询</button>
+        </div>
+        <div class="form-group">
+            <label for="sno">学号</label>
+            <input type="text" class="form-control" id="sno" name="sno"/>
+        </div>
+        <button type="submit" class="btn btn-primary">归还</button>
+    </form>
+</div>
+</body>
+</html>

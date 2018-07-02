@@ -1,0 +1,23 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <form th:action="@{/student/save}" th:object="${student}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="form-group">
+            <label th:for="sno">学号</label>
+            <input type="text" class="form-control" th:field="*{sno}" />
+        </div>
+        <div class="form-group">
+            <label th:for="name">姓名</label>
+            <input type="text" class="form-control" th:field="*{name}" />
+        </div>
+        <button type="submit" class="btn btn-primary">保存</button>
+    </form>
+</div>
+</body>
+</html>

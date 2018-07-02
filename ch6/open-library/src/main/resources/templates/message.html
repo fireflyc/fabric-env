@@ -1,0 +1,14 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <div class="alert alert-danger"
+         th:unless="${#strings.isEmpty(global_error)}"
+         th:text="${global_error}">
+    </div>
+    <div class="alert alert-success"
+         th:unless="${#strings.isEmpty(global_success)}"
+         th:text="${global_success}">
+    </div>
+    <div class="alert alert-primary"
+         th:unless="${#strings.isEmpty(global_message)}"
+         th:text="${global_message}">
+    </div>
+</div>

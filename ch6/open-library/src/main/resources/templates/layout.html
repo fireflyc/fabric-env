@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>图书联盟链</title>
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/dashboard.css}" rel="stylesheet"/>
+
+    <link th:href="@{/datatable/css/jquery.dataTables.css}" rel="stylesheet"/>
+    <link th:href="@{/datatable/css/dataTables.bootstrap4.css}" rel="stylesheet"/>
+</head>
+
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">xx大学</a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">注销</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${#httpServletRequest.getRequestURI().equals('/index')? 'active' : null}"
+                           th:href="@{/index}">
+                            <span data-feather="home"></span>
+                            首页
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${#httpServletRequest.getRequestURI().equals('/book/borrow')? 'active' : null}"
+                           th:href="@{/book/borrow}">
+                            <span data-feather="shopping-cart"></span>
+                            借阅
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${#httpServletRequest.getRequestURI().equals('/book/give_back')? 'active' : null}"
+                           th:href="@{/book/give_back}">
+                            <span data-feather="file-text"></span>
+                            归还
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${#httpServletRequest.getRequestURI().equals('/book/index')? 'active' : null}"
+                           th:href="@{/book/index}">
+                            <span data-feather="book"></span>
+                            图书管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${#httpServletRequest.getRequestURI().equals('/student/index')? 'active' : null}"
+                           th:href="@{/student/index}">
+                            <span data-feather="users"></span>
+                            学生管理
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="main col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div style="padding-top: 20px">
+                <div th:include="message"></div>
+                <div class="content" layout:fragment="content">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/popper.min.js}"></script>
+<script th:src="@{/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+<script th:src="@{/feather.min.js}"></script>
+
+<script th:src="@{/datatable/js/jquery.dataTables.js}"></script>
+<script th:src="@{/datatable/js/dataTables.bootstrap4.js}"></script>
+<script>
+    feather.replace()
+</script>
+
+</body>
+</html>

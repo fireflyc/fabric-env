@@ -1,0 +1,26 @@
+=============== May 17, 2018 (UTC) ===============
+12:06:21.723290 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:06:21.728626 db@open opening
+12:06:21.731659 version@stat F·[] S·0B[] Sc·[]
+12:06:21.734079 db@janitor F·2 G·0
+12:06:21.734391 db@open done T·5.4812ms
+=============== Jun 30, 2018 (UTC) ===============
+02:29:47.527427 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+02:29:47.530979 version@stat F·[] S·0B[] Sc·[]
+02:29:47.531398 db@open opening
+02:29:47.532731 journal@recovery F·1
+02:29:47.534363 journal@recovery recovering @1
+02:29:47.538401 memdb@flush created L0@2 N·6 S·14KiB "hello\x00\x00,v6":"hel..KEY,v1"
+02:29:47.540557 version@stat F·[1] S·14KiB[14KiB] Sc·[0.25]
+02:29:47.548028 db@janitor F·3 G·0
+02:29:47.548409 db@open done T·16.7519ms
+=============== Jul 1, 2018 (UTC) ===============
+03:13:16.424076 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+03:13:16.428123 version@stat F·[1] S·14KiB[14KiB] Sc·[0.25]
+03:13:16.428577 db@open opening
+03:13:16.429792 journal@recovery F·1
+03:13:16.430363 journal@recovery recovering @3
+03:13:16.434079 memdb@flush created L0@5 N·6 S·376B "hello\x00\x00,v13":"hel..ary,v8"
+03:13:16.435379 version@stat F·[2] S·14KiB[14KiB] Sc·[0.50]
+03:13:16.439890 db@janitor F·4 G·0
+03:13:16.440123 db@open done T·11.1253ms

@@ -1,0 +1,38 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <a class="btn btn-primary" th:href="@{/book/edit}">新建</a>
+    
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">书名</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">作者</th>
+            <th scope="col">出版社</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${page.getContent()}">
+            <td th:text="${book.title}">title</td>
+            <td th:text="${book.isbn}">isbn</td>
+            <td th:text="${book.author}">author</td>
+            <td th:text="${book.press}">press</td>
+            <td>
+                <a class="btn btn-success btn-sm" th:href="@{/book/edit?id=} + ${book.id}">编辑</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/book/delete?id=} + ${book.id}">删除</a>
+                <a class="btn btn-info btn-sm" th:href="@{/book/query_history?isbn=} + ${book.isbn}">查询历史</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

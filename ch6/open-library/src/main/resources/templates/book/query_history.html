@@ -1,0 +1,28 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">事务编号</th>
+            <th scope="col">借阅时间</th>
+            <th scope="col">借阅者</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="history : ${histories}">
+            <td th:text="${history.txId}">title</td>
+            <td th:text="${#dates.format(history.value.borrowTime, 'yyyy-MM-dd HH:mm:ss')}">date</td>
+            <td th:text="${history.value.borrower}">author</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

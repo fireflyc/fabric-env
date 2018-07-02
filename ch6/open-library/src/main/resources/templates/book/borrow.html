@@ -1,0 +1,22 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <form th:action="@{/book/borrow}" method="post">
+        <div class="form-group">
+            <label for="isbn">ISBN</label>
+            <input type="text" class="form-control" id="isbn" name="isbn"/>
+        </div>
+        <div class="form-group">
+            <label for="sno">学号</label>
+            <input type="text" class="form-control" id="sno" name="sno"/>
+        </div>
+        <button type="submit" class="btn btn-primary">借阅</button>
+    </form>
+</div>
+</body>
+</html>

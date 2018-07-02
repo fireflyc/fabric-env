@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    include: common
+  thymeleaf:
+    cache: false
+
+fabric:
+  channelName: hello
+  chainCodeName: bc_library
+  chainCodeVersion: 1.0
+  privateKeyFile: classpath:cert/org1/prv
+  certificateFile: classpath:cert/org1/Admin@org1.fireflyc.im-cert.pem
+  mspId: Org1MSP
+  orderer:
+      - name: orderer.fireflyc.im
+        url: grpc://localhost:7050
+  peers:
+      - name: peer0.org1.fireflyc.im
+        url: grpc://localhost:7051
+      - name: peer1.org1.fireflyc.im
+        url: grpc://localhost:8051
+
+
+config:
+  upload: /Users/fireflyc/open-library

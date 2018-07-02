@@ -1,0 +1,33 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <a class="btn btn-primary" th:href="@{/student/edit}">新建</a>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">姓名</th>
+            <th scope="col">学号</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${page.getContent()}">
+            <td th:text="${student.sno}">sno</td>
+            <td th:text="${student.name}">name</td>
+            <td>
+                <a class="btn btn-success btn-sm" th:href="@{/student/edit?id=} + ${student.id}">编辑</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/student/delete?id=} + ${student.id}">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

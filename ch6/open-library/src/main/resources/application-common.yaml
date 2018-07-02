@@ -1,0 +1,17 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: blockchain library
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/blockchainlibrary?useSSL=false
+    username: root
+    password: 12345
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jooq:
+    sql-dialect: mysql_5_7
