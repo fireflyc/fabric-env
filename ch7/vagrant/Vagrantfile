@@ -1,0 +1,58 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = '2'
+
+require 'yaml'
+
+machines = YAML.load_file(File.join(File.dirname(__FILE__), 'machines.yml'))
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  machines.each do |machine|
+    config.vm.define machine['name'] do |srv|
+
+      srv.vm.box_check_update = false
+      srv.vm.hostname = machine['name']
+      srv.vm.box = machine['box']
+      
+      if machine['nat']
+        machine['nat'].each  do |nat|
+          srv.vm.network "forwarded_port", guest: nat['guest'], host: nat['host']
+        end
+      end
+      
+      if machine['sync_folder']
+        machine['sync_folder'].each do |sync_folder|
+          srv.vm.synced_folder sync_folder['local'], sync_folder['remote']
+        end
+      end
+
+      if machine['shell']
+        machine['shell'].each do |shell|
+          srv.vm.provision "shell", inline:shell
+        end
+      end
+
+      if machine['nics']
+        machine['nics'].each do |net|
+          if net['ip_addr'] == 'dhcp'
+            srv.vm.network net['type'], type: net['ip_addr']
+          else
+            srv.vm.network net['type'], ip: net['ip_addr']
+          end
+        end
+      end
+
+      srv.vm.provider 'vmware_fusion' do |vmw|
+        vmw.vmx['memsize'] = machine['ram']
+        vmw.vmx['numvcpus'] = machine['vcpu']
+      end
+
+      srv.vm.provider "virtualbox" do |vb|
+        vb.memory = machine['ram']
+        vb.cpus = machine['vcpu']
+      end
+
+    end
+  end
+
+end

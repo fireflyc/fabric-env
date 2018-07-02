@@ -1,0 +1,38 @@
+- name: "orderer"
+  box: "ubuntu/bionic64"
+  ram: "2048"
+  vcpu: "4"
+  sync_folder:
+    - local: ../
+      remote: /app
+  shell:
+    - "/vagrant/script/bootstrap.sh"
+  nics:
+    - type: "private_network"
+      ip_addr: "192.168.100.10"
+
+- name: "org1"
+  box: "ubuntu/bionic64"
+  ram: "1024"
+  vcpu: "1"
+  sync_folder:
+    - local: ../
+      remote: /app
+  shell:
+    - "/vagrant/script/bootstrap.sh"
+  nics:
+    - type: "private_network"
+      ip_addr: "192.168.100.11"
+
+- name: "org2"
+  box: "ubuntu/bionic64"
+  ram: "1024"
+  vcpu: "1"
+  sync_folder:
+    - local: ../
+      remote: /app
+  shell:
+    - "/vagrant/script/bootstrap.sh"
+  nics:
+    - type: "private_network"
+      ip_addr: "192.168.100.12"

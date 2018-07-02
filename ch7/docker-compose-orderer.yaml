@@ -1,0 +1,97 @@
+version: '3'
+
+networks:
+  byfn:
+
+services:
+  orderer.fireflyc.im:
+    container_name: orderer.fireflyc.im
+    image: hyperledger/fabric-orderer:x86_64-1.1.0
+    restart: always
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp
+      
+      - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+      - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+      - ORDERER_KAFKA_VERBOSE=true
+    volumes:
+      - ./configtx/genesis.block:/etc/hyperledger/configtx/genesis.block
+      - ./crypto-config/ordererOrganizations/fireflyc.im/orderers/orderer.fireflyc.im/msp:/etc/hyperledger/msp/orderer/msp
+      - /fabric/orderer.fireflyc.im:/var/hyperledger/production/orderer:Z
+    ports:
+        - 7050:7050
+    command: orderer start
+    networks:
+        - byfn
+
+  zookeeper0:
+    container_name: zookeeper0
+    image: hyperledger/fabric-zookeeper:x86_64-0.4.6
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+    networks:
+        - byfn
+  zookeeper1:
+    container_name: zookeeper1
+    image: hyperledger/fabric-zookeeper:x86_64-0.4.6
+    environment:
+      - ZOO_MY_ID=2
+      - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+    networks:
+        - byfn
+  zookeeper2:
+    container_name: zookeeper2
+    image: hyperledger/fabric-zookeeper:x86_64-0.4.6
+    environment:
+      - ZOO_MY_ID=3
+      - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+    networks:
+        - byfn
+  
+  kafka0:
+    container_name: kafka0
+    image: hyperledger/fabric-kafka:x86_64-0.4.6
+    environment:
+      - KAFKA_BROKER_ID=0
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+    networks:
+        - byfn
+  kafka1:
+    container_name: kafka1
+    image: hyperledger/fabric-kafka:x86_64-0.4.6
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+    networks:
+        - byfn
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:x86_64-1.1.0
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_LOGGING_LEVEL=DEBUG
+      - CORE_PEER_ID=cli
+      - CORE_CHAINCODE_KEEPALIVE=10
+    command: /bin/bash
+    volumes:
+      - ./chaincode/demo1:/opt/gopath/src/github.com/demo1
+      - ./crypto-config:/opt/crypto-config
+      - ./configtx:/opt/configtx
+    networks:
+      - byfn
